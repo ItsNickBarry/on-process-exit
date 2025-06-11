@@ -19,14 +19,18 @@ const events = [
 ];
 
 let lastHandlerId = 0;
-const handlers: { [id: number]: () => void } = {};
+const handlers: { [id: number]: (event: string) => void } = {};
 
-const runHandlers = () =>
-  Object.values(handlers).forEach((handler) => handler());
+const runHandlers = (event: string) =>
+  Object.values(handlers).forEach((handler) => handler(event));
 
-events.forEach((event) => process.on(event, runHandlers));
+events.forEach((event) =>
+  process.on(event, runHandlers.bind(undefined, event)),
+);
 
-export const registerExitHandler = (callback: () => void): number => {
+export const registerExitHandler = (
+  callback: (event: string) => void,
+): number => {
   const handlerId = ++lastHandlerId;
   handlers[handlerId] = callback;
   return handlerId;
