@@ -23,7 +23,12 @@ const handlers: { [id: number]: (event: string) => void } = {};
 
 const runHandlers = (event: string) => {
   for (const handlerId in handlers) {
-    handlers[handlerId](event);
+    try {
+      handlers[handlerId](event);
+    } catch (error) {
+      // not much that can be done at this point
+    }
+
     deregisterExitHandler(parseInt(handlerId));
   }
 };
