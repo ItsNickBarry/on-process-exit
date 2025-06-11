@@ -21,8 +21,12 @@ const events = [
 let lastHandlerId = 0;
 const handlers: { [id: number]: (event: string) => void } = {};
 
-const runHandlers = (event: string) =>
-  Object.values(handlers).forEach((handler) => handler(event));
+const runHandlers = (event: string) => {
+  for (const handlerId in handlers) {
+    handlers[handlerId](event);
+    deregisterExitHandler(parseInt(handlerId));
+  }
+};
 
 events.forEach((event) =>
   process.on(event, runHandlers.bind(undefined, event)),
