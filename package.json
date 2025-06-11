@@ -9,7 +9,7 @@
     "ctrl-c",
     "callback"
   ],
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": "Nick Barry",
   "type": "module",
   "exports": {
