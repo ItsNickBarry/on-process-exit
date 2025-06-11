@@ -9,6 +9,7 @@
     "ctrl-c",
     "callback"
   ],
+  "repository": "github:ItsNickBarry/on-process-exit",
   "license": "MIT",
   "author": "Nick Barry",
   "type": "module",
