@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "description": "Register callbacks to be run on process exit",
   "keywords": [
-    "node", "process", "exit", "ctrl-c", "callback"
+    "node",
+    "process",
+    "exit",
+    "ctrl-c",
+    "callback"
   ],
   "license": "UNLICENSED",
   "author": "Nick Barry",
