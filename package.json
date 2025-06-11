@@ -1,6 +1,6 @@
 {
   "name": "on-process-exit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Register callbacks to be run on process exit",
   "keywords": [
     "node",
