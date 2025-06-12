@@ -18,18 +18,27 @@ const events = [
   'SIGTERM',
 ];
 
+// handlers are assigned sequential ids, starting with 1
 let lastHandlerId = 0;
 const handlers: { [id: number]: (event: string) => void } = {};
 
+// once an exit event is received, it is tracked here and further handlers
+// registrations are cancelled
+let eventReceived: string | undefined;
+
 const runHandlers = (event: string) => {
+  // some exit events are not mutually exclusive
+  // avoid multiple runs of the handlers
+  if (eventReceived) return;
+
+  eventReceived = event;
+
   for (const handlerId in handlers) {
     try {
       handlers[handlerId](event);
     } catch (error) {
       // not much that can be done at this point
     }
-
-    deregisterExitHandler(parseInt(handlerId));
   }
 };
 
@@ -40,9 +49,14 @@ events.forEach((event) =>
 export const registerExitHandler = (
   callback: (event: string) => void,
 ): number => {
-  const handlerId = ++lastHandlerId;
-  handlers[handlerId] = callback;
-  return handlerId;
+  if (eventReceived) {
+    callback(eventReceived);
+    throw new Error(`Exit already in progress: ${eventReceived}`);
+  } else {
+    const handlerId = ++lastHandlerId;
+    handlers[handlerId] = callback;
+    return handlerId;
+  }
 };
 
 export const deregisterExitHandler = (handlerId: number): void => {
